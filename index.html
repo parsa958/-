@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>چالش ۳۰ روزه رشد فردی</title>
+<style>
+  body {
+    font-family: sans-serif;
+    background: #f9f9f9;
+    text-align: center;
+    padding: 20px;
+  }
+  h1 {
+    color: #333;
+  }
+  .progress-container {
+    width: 100%;
+    background: #ddd;
+    border-radius: 20px;
+    margin: 20px 0;
+    overflow: hidden;
+  }
+  .progress-bar {
+    height: 20px;
+    background: linear-gradient(90deg, #00c6ff, #0072ff);
+    width: 0;
+    transition: width 0.3s ease;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  li {
+    background: #fff;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  li.checked {
+    background: #d4edda;
+    text-decoration: line-through;
+    color: #155724;
+  }
+  .day-number {
+    font-weight: bold;
+    color: #0072ff;
+  }
+</style>
+</head>
+<body>
+
+<h1>چالش ۳۰ روزه رشد فردی</h1>
+<p>هر روز یک قدم برای پیشرفت خودت بردار، تیک بزن و پیشرفت رو ببین!</p>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progress-bar"></div>
+</div>
+
+<ul id="day-list"></ul>
+
+<script>
+const dayList = document.getElementById('day-list');
+const progressBar = document.getElementById('progress-bar');
+let days = Array(30).fill(false);
+
+if(localStorage.getItem('daysProgress')){
+  days = JSON.parse(localStorage.getItem('daysProgress'));
+}
+
+function updateUI(){
+  dayList.innerHTML = '';
+  let completed = 0;
+  days.forEach((done, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<span class="day-number">روز ${index+1}</span> ${done ? '✅' : ''}`;
+    if(done) li.classList.add('checked');
+    li.addEventListener('click', () => {
+      days[index] = !days[index];
+      localStorage.setItem('daysProgress', JSON.stringify(days));
+      updateUI();
+    });
+    dayList.appendChild(li);
+    if(done) completed++;
+  });
+  progressBar.style.width = (completed / days.length * 100) + '%';
+}
+
+updateUI();
+</script>
+
+</body>
+</html>
